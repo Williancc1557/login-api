@@ -9,13 +9,17 @@ function getUsersService() {
 }
 
 async function getUsersByEmailPasswordService(email: string, password: string) {
-    const tokenAccount = jwt.sign({ email }, String(process.env.TOKEN_PRIVATE_KEY),
-        {
-            expiresIn: 60 * 60,
-        })
     if ((await getUsersByEmailPassword(email, password)).rowCount === 0) {
+
         return false
+
     } else {
+
+        const tokenAccount = jwt.sign({ email }, String(process.env.TOKEN_PRIVATE_KEY),
+            {
+                expiresIn: 60 * 60,
+            })
+        
         return {
             user: (await getUsersByEmailPassword(email, password)).rows,
             token: tokenAccount
