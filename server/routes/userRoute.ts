@@ -1,15 +1,10 @@
 import * as express from 'express';
 import { response, request } from '../types/routesTypes';
-import { getUsersService, getUsersByEmailPasswordService, postUserService, deleteUserService, verifyAuth } from '../service/usersService';
+import { getUsersByEmailPasswordService, postUserService, deleteUserService, verifyAuth } from '../service/usersService';
 
 
 const router = express.Router() 
 
-
-router.get('/users', async (req: request, res: response) => {
-    const users = await getUsersService();
-    res.json(users.rows);
-});
 
 router.get('/users/:email/:password', async (req: request, res: response) => {
     const userByEmailPassword = await getUsersByEmailPasswordService(req.params.email, req.params.password);
