@@ -1,6 +1,6 @@
 import * as express from 'express';
 import { response, request } from '../types/routesTypes';
-import { getUsersService, getUsersByEmailService, postUserService, deleteUserService } from '../service/usersService';
+import { getUsersService, getUsersByEmailService, postUserService, deleteUserService, verifyAuth } from '../service/usersService';
 
 
 const router = express.Router() 
@@ -16,9 +16,15 @@ router.get('/users/:email', async (req: request, res: response) => {
     res.json(userByEmail);
 });
 
+router.get('/verifyauth/:token', async (req: request, res: response) => {
+    const tokenInput = req.params.token
+    res.send(await verifyAuth(tokenInput))
+})
+
 router.post('/users', async (req: request, res: response) => {
     const emailData = req.body.email;
     const passwordData = req.body.password;
+
     try {
         const sendUser = await postUserService(emailData, passwordData)
         if (sendUser === 'Unable to complete registration') {
@@ -32,8 +38,10 @@ router.post('/users', async (req: request, res: response) => {
 });
 
 router.delete('/deleteuser/:email/:senha', async (req: request, res: response) => {
-    const deleted = await deleteUserService(req.params.email, req.params.senha);
+    const deleted = deleteUserService(req.params.email, req.params.senha);
     res.send(deleted)
 });
+
+
 
 export { router }

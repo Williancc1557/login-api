@@ -1,15 +1,26 @@
 import { response } from "express"
 import { getUsers, getUsersByEmail, postUser, deleteUser } from "../data/usersData" 
+import * as jwt from 'jsonwebtoken';
+import * as dotenv from 'dotenv'; 
+dotenv.config()
 
 function getUsersService() {
     return getUsers()
 }
 
-function getUsersByEmailService(email: string) {
-    return getUsersByEmail(email)
+async function getUsersByEmailService(email: string) {
+    const tokenAccount = jwt.sign({ email }, String(process.env.TOKEN_PRIVATE_KEY),
+        {
+            expiresIn: 60 * 60,
+        })
+    
+    return {
+        user: (await getUsersByEmail(email)).rows,
+        token: tokenAccount
+    }
 }
 
-function postUserService(email: string, password: string) {
+async function postUserService(email: string, password: string) {
     if (email.length >= 30 || password.length < 8 || password.length >= 30) {
         return 'Unable to complete registration'
     } else {
@@ -17,9 +28,18 @@ function postUserService(email: string, password: string) {
     }
 }
 
+async function verifyAuth(token: string) {
+    try {
+        jwt.verify(token, String(process.env.TOKEN_PRIVATE_KEY))
+        return true
+    } catch {
+        return false
+    }
+    
+}
 
-function deleteUserService(email: string, password: string) {
+async function deleteUserService(email: string, password: string) {
     return deleteUser(email, password)
 }
 
-export { getUsersService, getUsersByEmailService, postUserService, deleteUserService }
+export { getUsersService, getUsersByEmailService, postUserService, deleteUserService, verifyAuth }
