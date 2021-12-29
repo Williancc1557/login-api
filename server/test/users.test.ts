@@ -35,4 +35,9 @@ describe('Testing routes', () => {
         const req = await request(app).delete('/deleteuser/:email/:password')
         expect(req.statusCode).toEqual(200)
     })
+
+    it('Should test get auth', async () => {
+        const req = await request(app).get('/verifyauth/:token')
+        expect(req.statusCode).toEqual(200)
+    })
 })
