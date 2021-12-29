@@ -4,8 +4,8 @@ export function getUsers() {
     return db.query('select * from user_account')
 }
 
-export function getUsersByEmail(email: string) {
-    return db.query(`select * from user_account where email = '${email}'`)
+export function getUsersByEmailPassword(email: string, password: string) {
+    return db.query(`select * from user_account where email = '${email}' and password = '${password}'`)
 }
 
 export function postUser(email: string, password: string) {

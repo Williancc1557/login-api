@@ -16,8 +16,8 @@ describe('Testing routes', () => {
         expect(req.statusCode).toEqual(200)
     })
 
-    it('Should test user by email', async () => {
-        const req = await request(app).get('/users/:email')
+    it('Should test user by email and password', async () => {
+        const req = await request(app).get('/users/:email/:password')
         expect(req.body).toBeDefined()
         expect(typeof req.body).toBe('object')
         expect(req.statusCode).toEqual(200)

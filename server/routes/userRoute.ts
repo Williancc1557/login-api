@@ -1,6 +1,6 @@
 import * as express from 'express';
 import { response, request } from '../types/routesTypes';
-import { getUsersService, getUsersByEmailService, postUserService, deleteUserService, verifyAuth } from '../service/usersService';
+import { getUsersService, getUsersByEmailPasswordService, postUserService, deleteUserService, verifyAuth } from '../service/usersService';
 
 
 const router = express.Router() 
@@ -11,9 +11,9 @@ router.get('/users', async (req: request, res: response) => {
     res.json(users.rows);
 });
 
-router.get('/users/:email', async (req: request, res: response) => {
-    const userByEmail = await getUsersByEmailService(req.params.email);
-    res.json(userByEmail);
+router.get('/users/:email/:password', async (req: request, res: response) => {
+    const userByEmailPassword = await getUsersByEmailPasswordService(req.params.email, req.params.password);
+    res.json(userByEmailPassword);
 });
 
 router.get('/verifyauth/:token', async (req: request, res: response) => {

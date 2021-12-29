@@ -1,5 +1,5 @@
 import { response } from "express"
-import { getUsers, getUsersByEmail, postUser, deleteUser } from "../data/usersData" 
+import { getUsers, getUsersByEmailPassword, postUser, deleteUser } from "../data/usersData" 
 import * as jwt from 'jsonwebtoken';
 import * as dotenv from 'dotenv'; 
 dotenv.config()
@@ -8,14 +8,14 @@ function getUsersService() {
     return getUsers()
 }
 
-async function getUsersByEmailService(email: string) {
+async function getUsersByEmailPasswordService(email: string, password: string) {
     const tokenAccount = jwt.sign({ email }, String(process.env.TOKEN_PRIVATE_KEY),
         {
             expiresIn: 60 * 60,
         })
     
     return {
-        user: (await getUsersByEmail(email)).rows,
+        user: (await getUsersByEmailPassword(email, password)).rows,
         token: tokenAccount
     }
 }
@@ -42,4 +42,4 @@ async function deleteUserService(email: string, password: string) {
     return deleteUser(email, password)
 }
 
-export { getUsersService, getUsersByEmailService, postUserService, deleteUserService, verifyAuth }
+export { getUsersService, getUsersByEmailPasswordService, postUserService, deleteUserService, verifyAuth }
