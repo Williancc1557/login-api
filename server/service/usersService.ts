@@ -13,11 +13,15 @@ async function getUsersByEmailPasswordService(email: string, password: string) {
         {
             expiresIn: 60 * 60,
         })
-    
-    return {
-        user: (await getUsersByEmailPassword(email, password)).rows,
-        token: tokenAccount
+    if ((await getUsersByEmailPassword(email, password)).rowCount === 0) {
+        return false
+    } else {
+        return {
+            user: (await getUsersByEmailPassword(email, password)).rows,
+            token: tokenAccount
+        }
     }
+    
 }
 
 async function postUserService(email: string, password: string) {
