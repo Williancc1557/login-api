@@ -1,6 +1,7 @@
 import { response } from "express"
 import { getUsers, getUsersByEmailPassword, postUser, deleteUser } from "../data/usersData" 
 import * as jwt from 'jsonwebtoken';
+import { isEmail } from '@techmmunity/utils';
 import * as dotenv from 'dotenv'; 
 dotenv.config()
 
@@ -30,10 +31,11 @@ const getUsersByEmailPasswordService = async (email: string, password: string) =
 
 
 const postUserService = async (email: string, password: string) => {
-    if (email.length >= 30 || password.length < 8 || password.length >= 30) return {value: false, error: "Unable to complete registration"}
-    else {
-        return postUser(email, password)
-    }
+    const checkEmail = isEmail(email)
+    
+    if (checkEmail == false) return {value: false, error: "Unable to complete registration"}
+    return postUser(email, password)
+    
 }
 
 

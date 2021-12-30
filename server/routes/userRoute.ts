@@ -1,7 +1,7 @@
 import * as express from 'express';
 import { response, request } from '../types/routesTypes';
 import { getUsersByEmailPasswordService, postUserService, deleteUserService, verifyAuth } from '../service/usersService';
-
+import { isEmail } from '@techmmunity/utils'
 
 const router = express.Router() 
 
@@ -19,7 +19,10 @@ router.post('/users', async (req: request, res: response, next) => {
     const emailData = req.body.email;
     const passwordData = req.body.password;
     try {
+        
+        console.log(await postUserService(emailData, passwordData))
         const sendUser = await postUserService(emailData, passwordData)
+        
         res.send(sendUser)
     } catch {
         res.json({
