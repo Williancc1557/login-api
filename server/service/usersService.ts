@@ -34,12 +34,8 @@ const getUsersByEmailPasswordService = async (email: string, password: string) =
 
 
 const postUserService = async (email: string, password: string) => {
-    if (email.length >= 30 || password.length < 8 || password.length >= 30) {
-        return {
-            value: false,
-            error: "Unable to complete registration"
-        }
-    } else {
+    if (email.length >= 30 || password.length < 8 || password.length >= 30) return {value: false, error: "Unable to complete registration"}
+    else {
         return postUser(email, password)
     }
 }
