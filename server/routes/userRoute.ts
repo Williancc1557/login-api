@@ -5,8 +5,7 @@ import { getUsersByEmailPasswordService, postUserService, deleteUserService, ver
 
 const router = express.Router() 
 
-
-router.get('/users/:email/:password', async (req: request, res: response) => {
+router.get('/users/:email/:password', async (req: request, res: response, next) => {
     const userByEmailPassword = await getUsersByEmailPasswordService(req.params.email, req.params.password);
     res.json(userByEmailPassword);
 });
@@ -16,27 +15,23 @@ router.get('/verifyauth/:token', async (req: request, res: response) => {
     res.send(await verifyAuth(tokenInput))
 })
 
-router.post('/users', async (req: request, res: response) => {
+router.post('/users', async (req: request, res: response, next) => {
     const emailData = req.body.email;
     const passwordData = req.body.password;
-
     try {
         const sendUser = await postUserService(emailData, passwordData)
-        if (sendUser === 'Unable to complete registration') {
-            return res.send(sendUser)
-        } else {
-            return res.send('Created account whith sucess!')
-        }
+        res.send(sendUser)
     } catch {
-        return res.send('There is already an account with this email')
+        res.json({
+            value: false,
+            error: "already have an account with this email"
+        })
     }
 });
 
 router.delete('/deleteuser/:email/:senha', async (req: request, res: response) => {
-    const deleted = deleteUserService(req.params.email, req.params.senha);
+    const deleted = await deleteUserService(req.params.email, req.params.senha);
     res.send(deleted)
 });
-
-
 
 export { router }

@@ -9,13 +9,6 @@ describe('Testing database', () => {
 })
 
 describe('Testing routes', () => {
-    it('should test all users', async () => {
-        const req = await request(app).get('/users')
-        expect(req.body).toBeDefined()
-        expect(typeof req.body).toBe('object')
-        expect(req.statusCode).toEqual(200)
-    })
-
     it('Should test user by email and password', async () => {
         const req = await request(app).get('/users/:email/:password')
         expect(req.body).toBeDefined()

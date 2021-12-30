@@ -10,8 +10,10 @@ function getUsersService() {
 
 async function getUsersByEmailPasswordService(email: string, password: string) {
     if ((await getUsersByEmailPassword(email, password)).rowCount === 0) {
-
-        return false
+        return {
+            value: false,
+            error: "account not found"
+        }
 
     } else {
 
@@ -30,7 +32,10 @@ async function getUsersByEmailPasswordService(email: string, password: string) {
 
 async function postUserService(email: string, password: string) {
     if (email.length >= 30 || password.length < 8 || password.length >= 30) {
-        return 'Unable to complete registration'
+        return {
+            value: false,
+            error: "Unable to complete registration"
+        }
     } else {
         return postUser(email, password)
     }

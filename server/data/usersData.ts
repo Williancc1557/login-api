@@ -13,5 +13,6 @@ export function postUser(email: string, password: string) {
 }
 
 export function deleteUser(email: string, password: string) {
-    return db.query(`DELETE FROM user_account WHERE email= '${email}' AND password = '${password}'`)
+
+    return db.query(`DELETE FROM user_account WHERE email= '${email}' AND password = '${password}'`)   
 }
