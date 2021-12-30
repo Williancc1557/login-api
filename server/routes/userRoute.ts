@@ -18,12 +18,12 @@ router.get('/verifyauth/:token', async (req: request, res: response) => {
 router.post('/users', async (req: request, res: response, next) => {
     const emailData = req.body.email;
     const passwordData = req.body.password;
+
     try {
+
+        await postUserService(emailData, passwordData)
         
-        console.log(await postUserService(emailData, passwordData))
-        const sendUser = await postUserService(emailData, passwordData)
-        
-        res.send(sendUser)
+        res.send(true)
     } catch {
         res.json({
             value: false,
