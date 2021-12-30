@@ -14,19 +14,20 @@ const getUsersByEmailPasswordService = async (email: string, password: string) =
             error: "account not found"
         }
 
-    } else {
+    } 
 
-        const tokenAccount = jwt.sign({ email }, String(process.env.TOKEN_PRIVATE_KEY),
-            {
-                expiresIn: 60 * 60,
-            })
-        
-        return {
-            user: (await getUsersByEmailPassword(email, password)).rows[0],
-            token: tokenAccount
+    const tokenAccount = jwt.sign(
+        { email },
+        String(process.env.TOKEN_PRIVATE_KEY),
+        {
+            expiresIn: 60 * 60,
         }
-    }
+    )
     
+    return {
+        user: (await getUsersByEmailPassword(email, password)).rows[0],
+        token: tokenAccount
+    }   
 }
 
 
