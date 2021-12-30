@@ -4,11 +4,7 @@ import * as jwt from 'jsonwebtoken';
 import * as dotenv from 'dotenv'; 
 dotenv.config()
 
-
-const getUsersService = async () => {
-    return getUsers()
-}
-
+const getUsersService = async () => getUsers()
 
 const getUsersByEmailPasswordService = async (email: string, password: string) => {
     if ((await getUsersByEmailPassword(email, password)).rowCount === 0) {
