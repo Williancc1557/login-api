@@ -1,5 +1,5 @@
 import { response } from "express"
-import { getUsers, getUsersByEmailPassword, postUser, deleteUser } from "../data/usersData" 
+import { getUsers, getUsersByEmailPasswordDomain, postUser, deleteUser, getUserByDomain } from "../data/usersData" 
 import * as jwt from 'jsonwebtoken';
 import { isEmail } from '@techmmunity/utils';
 import * as dotenv from 'dotenv'; 
@@ -7,36 +7,39 @@ dotenv.config()
 
 const getUsersService = async () => getUsers()
 
-const getUsersByEmailPasswordService = async (email: string, password: string) => {
-    if ((await getUsersByEmailPassword(email, password)).rowCount === 0) {
-        return {
-            value: false,
-            error: "account not found"
-        }
+const getUsersByEmailPasswordDomainService = async (email: string, domainkey: string, domain: string) => {
+    const getuser = await getUsersByEmailPasswordDomain(email, domainkey, domain)
 
-    } 
+    if (getuser.rowCount === 0) return { value: false,error: "account not found"} 
 
     const tokenAccount = jwt.sign(
         { email },
         String(process.env.TOKEN_PRIVATE_KEY),
         {
-            expiresIn: 60 * 60,
+            expiresIn: '5h',
         }
     )
-    
+
     return {
-        user: (await getUsersByEmailPassword(email, password)).rows[0],
+        user: (getuser).rows[0],
         token: tokenAccount
     }   
 }
 
 
-const postUserService = async (email: string, password: string) => {
+const postUserService = async (email: string, password: string, domain: string, domainkey: string) => {
     const checkEmail = isEmail(email)
     
-    if (checkEmail == false) return {value: false, error: "Unable to complete registration"}
-    return postUser(email, password)
-    
+    try {
+        const requestUserDomain = await getUsersByEmailPasswordDomain(email, password, domain)
+        console.log(requestUserDomain)
+        if (requestUserDomain.rows[0].domainkey != domainkey) return { value: false, error: "already have an domain with this name" }
+        if (checkEmail == false) return { value: false, error: "unable to complete registration" }
+        if (requestUserDomain.rowCount >= 1) return { value: false, error: "already have an account with this email" }
+    } catch {
+        const request = postUser(email, password, domain, domainkey)
+        return await request
+    }
 }
 
 
@@ -47,7 +50,6 @@ const verifyAuth = async (token: string) => {
     } catch {
         return false
     }
-    
 }
 
 
@@ -56,4 +58,4 @@ const deleteUserService = async (email: string, password: string) => {
 }
 
 
-export { getUsersService, getUsersByEmailPasswordService, postUserService, deleteUserService, verifyAuth }
+export { getUsersService, getUsersByEmailPasswordDomainService, postUserService, deleteUserService, verifyAuth }

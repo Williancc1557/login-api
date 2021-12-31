@@ -10,7 +10,7 @@ describe('Testing database', () => {
 
 describe('Testing routes', () => {
     it('Should test user by email and password', async () => {
-        const req = await request(app).get('/users/:email/:password')
+        const req = await request(app).get('/users/:email/:password/domain: string')
         expect(req.body).toBeDefined()
         expect(typeof req.body).toBe('object')
         expect(req.statusCode).toEqual(200)

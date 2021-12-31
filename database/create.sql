@@ -1,7 +1,6 @@
-create table user_account (
+create table user_profile (
 	email varchar(30),
 	password varchar(40),
-	
-	primary key(email)
+	domain varchar(25),
+	domainkey varchar(25)
 );
-
