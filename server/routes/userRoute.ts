@@ -1,6 +1,6 @@
 import * as express from 'express';
 import { response, request } from '../types/routesTypes';
-import { getUsersByEmailPasswordDomainService, postUserService, deleteUserService, verifyAuth } from '../service/usersService';
+import { getUsersByEmailPasswordDomainService, postUserService, deleteUserService, verifyAuth, createToken } from '../service/usersService';
 import { isEmail } from '@techmmunity/utils'
 
 const router = express.Router() 
@@ -9,6 +9,15 @@ router.get('/users/:email/:domain/:domainkey', async (req: request, res: respons
     const userByEmailPassword = await getUsersByEmailPasswordDomainService(req.params.email, req.params.domainkey, req.params.domain);
     res.json(userByEmailPassword);
 });
+
+router.post('/createtoken', async (req: request, res: response) => {
+    const email = req.params.email
+    const password = req.params.password
+    const domain = req.body.domain
+
+    const token = await createToken(email, password)
+    res.send(token)
+})
 
 router.get('/verifyauth/:token', async (req: request, res: response) => {
     const tokenInput = req.params.token

@@ -10,20 +10,9 @@ const getUsersService = async () => getUsers()
 const getUsersByEmailPasswordDomainService = async (email: string, domainkey: string, domain: string) => {
     const getuser = await getUsersByEmailPasswordDomain(email, domainkey, domain)
 
-    if (getuser.rowCount === 0) return { value: false,error: "account not found"} 
+    if (getuser.rowCount === 0) return { value: false,error: "account not found"}
 
-    const tokenAccount = jwt.sign(
-        { email },
-        String(process.env.TOKEN_PRIVATE_KEY),
-        {
-            expiresIn: '5h',
-        }
-    )
-
-    return {
-        user: (getuser).rows[0],
-        token: tokenAccount
-    }   
+    return (getuser).rows[0]
 }
 
 
@@ -31,7 +20,7 @@ const postUserService = async (email: string, password: string, domain: string, 
     const checkEmail = isEmail(email)
     
     try {
-        const requestUserDomain = await getUsersByEmailPasswordDomain(email, password, domain)
+        const requestUserDomain = await getUsersByEmailPasswordDomain(email, domainkey, domain)
         console.log(requestUserDomain)
         if (requestUserDomain.rows[0].domainkey != domainkey) return { value: false, error: "already have an domain with this name" }
         if (checkEmail == false) return { value: false, error: "unable to complete registration" }
@@ -42,6 +31,16 @@ const postUserService = async (email: string, password: string, domain: string, 
     }
 }
 
+const createToken = async (email: string, password: string) => {
+    const tokenAccount = jwt.sign(
+            { email },
+            String(process.env.TOKEN_PRIVATE_KEY),
+            {
+                expiresIn: '5h',
+            }
+    )
+    return tokenAccount
+}
 
 const verifyAuth = async (token: string) => {
     try {
@@ -58,4 +57,4 @@ const deleteUserService = async (email: string, password: string) => {
 }
 
 
-export { getUsersService, getUsersByEmailPasswordDomainService, postUserService, deleteUserService, verifyAuth }
+export { getUsersService, getUsersByEmailPasswordDomainService, postUserService, deleteUserService, verifyAuth, createToken }

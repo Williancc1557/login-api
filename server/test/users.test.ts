@@ -10,9 +10,14 @@ describe('Testing database', () => {
 
 describe('Testing routes', () => {
     it('Should test user by email and password', async () => {
-        const req = await request(app).get('/users/:email/:password/domain: string')
+        const req = await request(app).get('/users/:email/:domain/:domainkey')
         expect(req.body).toBeDefined()
         expect(typeof req.body).toBe('object')
+        expect(req.statusCode).toEqual(200)
+    })
+
+    it('Shold test create token', async () => {
+        const req = await request(app).post('/createtoken')
         expect(req.statusCode).toEqual(200)
     })
 
@@ -33,4 +38,5 @@ describe('Testing routes', () => {
         const req = await request(app).get('/verifyauth/:token')
         expect(req.statusCode).toEqual(200)
     })
+
 })
