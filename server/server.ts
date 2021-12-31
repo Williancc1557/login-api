@@ -1,6 +1,7 @@
-import * as express from 'express';
-import { app } from './app'
+import { app } from "./app";
 
-const PORTA = process.env.PORT || 3000
+const portaLocal = 3000;
+const portaHost = process.env.PORT;
+const PORTA = portaHost || portaLocal;
 
-app.listen(PORTA)
+app.listen(PORTA);
