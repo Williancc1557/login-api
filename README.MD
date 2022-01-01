@@ -50,14 +50,11 @@ _Obs: Não perca seu **DOMAIN** nem seu **DOMAINKEY** em hipotese alguma!_
 
 ```json
 {
-  "user": {
     "email": "asdawd@wadawd.com",
     "password": "asdsadsa",
     "domain": "WILL",
     "domainkey": "croma"
-  },
-  "token": "eyJhciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFzZGF3ZGRAd2FkYXdkLmNvbSIsImlhdCI6MTY0MDkwOTA2MCwiZXhwIjoxNjQwOTEyNjYwfQ.SjvkZOmwgc6IxwYk2J4Z5a2PBn1VZ1UBxH6z2ibouG0"
-}
+ },
 ```
 
 ## Validador de token `https://login-api-dev.herokuapp.com/verifyauth/:token`
