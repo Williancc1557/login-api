@@ -23,14 +23,18 @@ describe("Testing routes", () => {
 
     it("Should test post user", async () => {
         const req = await request(app).post("/users").send({
-            email: "willianccc@gmail.com",
-            password: "123123123",
+            email: "test123",
+            password: "test123",
         });
         expect(req.statusCode).toEqual(200);
     });
 
     it("Should test delete user", async () => {
-        const req = await request(app).delete("/deleteuser/:email/:password");
+        const req = await request(app).post("/deleteuser").send({
+            "email": "test123",
+            "domain": "test123",
+            "domainkey": "test123",
+        });
         expect(req.statusCode).toEqual(200);
     });
 

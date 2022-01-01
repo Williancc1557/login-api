@@ -8,4 +8,4 @@ export const getUsersByEmailPasswordDomain = (email: string, domainkey: string, 
 
 export const postUser = (email: string, password: string, domain: string, domainkey: string) => db.query(`INSERT INTO user_profile (email, password, domain, domainkey) VALUES ( '${email}', '${password}', '${domain}', '${domainkey}')`);
 
-export const deleteUser = (email: string, password: string) => db.query(`DELETE FROM user_profile WHERE email= '${email}' AND password = '${password}'`);   
+export const deleteUser = (email: string, domain: string, domainkey: string) => db.query(`DELETE FROM user_profile WHERE email= '${email}' AND domain = '${domain}' AND domainkey = '${domainkey}'`);   

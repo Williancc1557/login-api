@@ -29,8 +29,8 @@ const postUserService = async (email: string, password: string, domain: string, 
         if (!checkEmail) return { value: false, error: "unable to complete registration" };
         if (requestUserDomain.rowCount >= numberUserByDomain) return { value: false, error: "already have an account with this email" };
     } catch {
-        const request = postUser(email, password, domain, domainkey);
-        return request;
+        await postUser(email, password, domain, domainkey);
+        return true;
     }
 };
 
@@ -55,8 +55,12 @@ const verifyAuth = async (token: string) => {
 };
 
 
-const deleteUserService = async (email: string, password: string) => {
-    return deleteUser(email, password);
+const deleteUserService = async (email: string, domain: string, domainkey: string) => {
+    const result = await deleteUser(email, domain, domainkey);
+    const rowCountSend = result.rowCount;
+    const rowCountFalse = 0;
+    if (rowCountSend == rowCountFalse) return false;
+    return true;
 };
 
 
