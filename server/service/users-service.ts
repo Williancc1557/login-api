@@ -7,7 +7,9 @@ dotenv.config();
 const getUsersService = async () => getUsers();
 
 const getUsersByEmailPasswordDomainService = async (email: string, domainkey: string, domain: string) => {
+    console.log(email, domain, domainkey);
     const getuser = await getUsersByEmailPasswordDomain(email, domainkey, domain);
+    console.log(getuser);
     const ivalidAccountNumber = 0;
     const selectRow = 0;
 

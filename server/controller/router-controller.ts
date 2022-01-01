@@ -6,7 +6,7 @@ export class RoutesController {
     public async routePostUserGet(req: request, res: response): Promise<response> {
         const email = req.body.email;
         const domain = req.body.domain;
-        const domainkey = req.body.domain;
+        const domainkey = req.body.domainkey;
         const userByEmailPassword = await getUsersByEmailPasswordDomainService(
             email,
             domainkey,
