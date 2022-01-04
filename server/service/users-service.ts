@@ -2,21 +2,21 @@
 import * as jwt from "jsonwebtoken";
 import { isEmail } from "@techmmunity/utils";
 import * as dotenv from "dotenv";
+import UserData from "../data/users-data";
+import { UserDataType } from "../types/routes-types";
 
-import UserData from '../data/users-data'
-
-const user = new UserData()
+const user = new UserData();
 
 dotenv.config();
 
-const getUsersService = async () => user.get();
+export const getUsersService = async () => user.get();
 
-const getUsersByEmailPasswordDomainService = async (email: string, domainkey: string, domain: string) => {
+export const getUsersByEmailPasswordDomainService = async (email: string, domainkey: string, domain: string) => {
     const getuser = await user.getByEmailPasswordDomain(
         {
             email: email,
             domainkey: domainkey,
-            domain: domain
+            domain: domain,
         });
     const ivalidAccountNumber = 0;
     const selectRow = 0;
@@ -27,7 +27,7 @@ const getUsersByEmailPasswordDomainService = async (email: string, domainkey: st
 };
 
 
-const postUserService = async (email: string, password: string, domain: string, domainkey: string) => {
+export const postUserService = async (email: string, password: string, domain: string, domainkey: string) => {
     const checkEmail = isEmail(email);
 
     try {
@@ -35,7 +35,7 @@ const postUserService = async (email: string, password: string, domain: string, 
             {
                 email: email,
                 domainkey: domainkey,
-                domain: domain
+                domain: domain,
             });
         const rowsRequest = 0;
         const numberUserByDomain = 1;
@@ -45,16 +45,16 @@ const postUserService = async (email: string, password: string, domain: string, 
         if (requestUserDomain.rowCount >= numberUserByDomain) return { value: false, error: "already have an account with this email" };
     } catch {
         await user.post({
-                email: email, 
-                password: password, 
-                domain: domain, 
-                domainkey: domainkey
-            });
+            email: email,
+            password: password,
+            domain: domain,
+            domainkey: domainkey,
+        });
         return true;
     }
 };
 
-const createToken = async (email: string) => {
+export const createToken = async (email: string) => {
     const tokenAccount = jwt.sign(
         { email },
         String(process.env.TOKEN_PRIVATE_KEY),
@@ -65,7 +65,7 @@ const createToken = async (email: string) => {
     return tokenAccount;
 };
 
-const verifyAuth = async (token: string) => {
+export const verifyAuth = async (token: string) => {
     try {
         jwt.verify(token, String(process.env.TOKEN_PRIVATE_KEY));
         return true;
@@ -75,17 +75,28 @@ const verifyAuth = async (token: string) => {
 };
 
 
-const deleteUserService = async (email: string, domain: string, domainkey: string) => {
+export const updateUser = async ({ email, domainkey, domain, newemail, newpassword }: UserDataType) => {
+    const result = user.updateUser({
+        email: email,
+        domainkey: domainkey,
+        domain: domain,
+        newemail: newemail,
+        newpassword: newpassword,
+    });
+
+    const testSend = result != false ? true : false;
+    return testSend;
+};
+
+export const deleteUserService = async (email: string, domain: string, domainkey: string) => {
     const result = await user.delete({
-        email: email, 
-        domain: domain, 
-        domainkey: domainkey
+        email: email,
+        domain: domain,
+        domainkey: domainkey,
     });
     const rowCountSend = result.rowCount;
     const rowCountFalse = 0;
-    if (rowCountSend == rowCountFalse) return false;
-    return true;
+    const sendReturn = rowCountSend == rowCountFalse ? false : true;
+    console.log(sendReturn);
+    return sendReturn;
 };
-
-
-export { getUsersService, getUsersByEmailPasswordDomainService, postUserService, deleteUserService, verifyAuth, createToken };

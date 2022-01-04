@@ -38,6 +38,11 @@ describe("Testing routes", () => {
         expect(req.statusCode).toEqual(200);
     });
 
+    it("Shoud test get auth", async () => {
+        const req = await request(app).post("/updateuser");
+        expect(req.statusCode).toEqual(200);
+    });
+
     it("Should test get auth", async () => {
         const req = await request(app).get("/verifyauth/:token");
         expect(req.statusCode).toEqual(200);

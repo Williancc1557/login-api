@@ -1,16 +1,20 @@
 import * as express from "express";
 import { RoutesController } from "../controller/router-controller";
 
+const controller = new RoutesController;
+
 const router = express.Router();
 
-router.post("/users/get", new RoutesController().routePostUserGet);
+router.post("/users/get", controller.routePostUserGet);
 
-router.post("/createtoken", new RoutesController().routerPostCrateToken);
+router.post("/createtoken", controller.routerPostCrateToken);
 
-router.get("/verifyauth/:token", new RoutesController().routerVerifyAuth);
+router.get("/verifyauth/:token", controller.routerVerifyAuth);
 
-router.post("/users", new RoutesController().routerPostUser);
+router.post("/users", controller.routerPostUser);
 
-router.post("/deleteuser", new RoutesController().routerDeleteUser);
+router.post("/updateuser", controller.routerUpdateUser);
+
+router.post("/deleteuser", controller.routerDeleteUser);
 
 export { router };

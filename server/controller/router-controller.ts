@@ -1,4 +1,4 @@
-import { createToken, deleteUserService, getUsersByEmailPasswordDomainService, postUserService, verifyAuth } from "../service/users-service";
+import { createToken, deleteUserService, getUsersByEmailPasswordDomainService, postUserService, updateUser, verifyAuth } from "../service/users-service";
 import { request, response } from "../types/routes-types";
 
 export class RoutesController {
@@ -47,6 +47,26 @@ export class RoutesController {
 
         return res.json(data);
     }
+
+    public async routerUpdateUser(req: request, res: response): Promise<response> {
+        const emailData = req.body.email;
+        const domainData = req.body.domain;
+        const domainKeyData = req.body.domainkey;
+        const newemailData = req.body.newemail;
+        const newpasswordData = req.body.newpassword;
+
+        const data = await updateUser({
+            email: emailData,
+            domainkey: domainKeyData,
+            domain: domainData,
+            newemail: newemailData,
+            newpassword: newpasswordData,
+        }
+        );
+        console.log(data);
+        return res.json(data);
+    }
+
 
 
     public async routerDeleteUser(req: request, res: response): Promise<response> {
