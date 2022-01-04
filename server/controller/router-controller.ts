@@ -38,6 +38,7 @@ export class RoutesController {
         const passwordData = req.body.password;
         const domainData = req.body.domain;
         const domainKeyData = req.body.domainkey;
+
         const data = await postUserService(
             emailData,
             passwordData,
@@ -63,7 +64,6 @@ export class RoutesController {
             newpassword: newpasswordData,
         }
         );
-        console.log(data);
         return res.json(data);
     }
 

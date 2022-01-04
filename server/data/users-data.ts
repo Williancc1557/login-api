@@ -8,11 +8,10 @@ export default class UserData {
         return db.query("select * from user_profile");
     };
 
-    public getByDomain = ({ domain, domainkey }: UserDataType) => db.query(`select * from user_profile where domain = '${domain}' and domainkey = '${domainkey}'`);
+    public getByDomain = ({ domain }: UserDataType) => db.query(`select * from user_profile where domain = '${domain}'`);
 
 
     public getByEmailPasswordDomain = ({ email, domainkey, domain }: UserDataType) => db.query(`select * from user_profile where email = '${email}' and domainkey = '${domainkey}' and domain = '${domain}'`);
-
 
     public updateUser = ({ email, domainkey, domain, newemail, newpassword }: UserDataType) => {
         if (newemail && newpassword) return db.query(`UPDATE user_profile SET email = '${newemail}', password = '${newpassword}' WHERE email = '${email}' and domain = '${domain}' and domainkey = '${domainkey}'`);

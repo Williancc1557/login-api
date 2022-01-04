@@ -27,6 +27,7 @@ export const getUsersByEmailPasswordDomainService = async (email: string, domain
 };
 
 
+
 export const postUserService = async (email: string, password: string, domain: string, domainkey: string) => {
     const checkEmail = isEmail(email);
 
@@ -37,12 +38,26 @@ export const postUserService = async (email: string, password: string, domain: s
                 domainkey: domainkey,
                 domain: domain,
             });
+        const checkDomain = await user.getByDomain({
+            domainkey: domainkey,
+            domain: domain,
+        });
         const rowsRequest = 0;
         const numberUserByDomain = 1;
 
-        if (requestUserDomain.rows[rowsRequest].domainkey != domainkey) return { value: false, error: "already have an domain with this name" };
+
+
+        if (checkDomain.rows[rowsRequest].domainkey != domainkey) return { value: false, error: "Domain password invalid!" };
         if (!checkEmail) return { value: false, error: "unable to complete registration" };
         if (requestUserDomain.rowCount >= numberUserByDomain) return { value: false, error: "already have an account with this email" };
+
+        await user.post({
+            email: email,
+            password: password,
+            domain: domain,
+            domainkey: domainkey,
+        });
+        return true;
     } catch {
         await user.post({
             email: email,
