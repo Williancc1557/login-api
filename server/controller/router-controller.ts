@@ -52,9 +52,9 @@ export class RoutesController {
     public async routerUpdateUser(req: request, res: response): Promise<response> {
         const emailData = req.body.email;
         const domainData = req.body.domain;
-        const domainKeyData = req.body.domainkey;
-        const newemailData = req.body.newemail;
-        const newpasswordData = req.body.newpassword;
+        const domainKeyData = req.body.domainKey;
+        const newemailData = req.body.newEmail;
+        const newpasswordData = req.body.newPassword;
 
         const data = await updateUser({
             email: emailData,
