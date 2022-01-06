@@ -21,7 +21,7 @@ export class RoutesController {
         const email = req.params.email;
         const token = await createToken(email);
 
-        return res.send(token);
+        return res.json(token);
     }
 
 
@@ -29,7 +29,7 @@ export class RoutesController {
         const tokenInput = req.params.token;
         const result = await verifyAuth(tokenInput);
 
-        return res.send(result);
+        return res.json(result);
     }
 
 
