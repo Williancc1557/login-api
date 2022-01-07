@@ -75,7 +75,7 @@ export class RoutesController {
         const domainKeyData = req.body.domainkey;
         const deleted = await deleteUserService(emailData, domainData, domainKeyData);
 
-        return res.send(deleted);
+        return res.json(deleted);
     }
 }
 
