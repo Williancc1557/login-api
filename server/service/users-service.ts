@@ -112,6 +112,5 @@ export const deleteUserService = async (email: string, domain: string, domainkey
     const rowCountSend = result.rowCount;
     const rowCountFalse = 0;
     const sendReturn = rowCountSend == rowCountFalse ? false : true;
-    console.log(sendReturn);
     return sendReturn;
 };
